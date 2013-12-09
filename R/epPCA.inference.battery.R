@@ -25,7 +25,7 @@ permute.components.pca <- function(DATA,scale=TRUE,center=TRUE,k=0){
 		
 		if(i==1){
 			cycle.time <- (proc.time() - start.time) #this is in seconds...
-			if(!continueResampling(cycle.time,test.iters)){
+			if(!continueResampling(cycle.time[1] * test.iters)){
 				##exit strategy.
 				return(fixed.res)
 			}
@@ -43,7 +43,7 @@ permute.components.pca <- function(DATA,scale=TRUE,center=TRUE,k=0){
 	eigs.perm.matrix <- eigs.perm.matrix[,1:ncomps]
 	component.p.vals <- 1-(colSums(eigs.perm.matrix < matrix(fixed.res$ExPosition.Data$eigs,test.iters, ncomps,byrow=TRUE))/test.iters)
 	component.p.vals[which(component.p.vals==0)] <- 1/test.iters
-	components.data <- list(p.vals=component.p.vals, eigs.perm=eigs.perm.matrix, eigs=fixed.res$ExPosition.Data$eigs)
+	components.data <- list(p.vals=round(component.p.vals,digits=4), eigs.perm=eigs.perm.matrix, eigs=fixed.res$ExPosition.Data$eigs)
 	class(components.data) <- c("inpoComponents","list")
 	
 	Inference.Data <- list(components=components.data,fj.boots=fj.boot.data)
