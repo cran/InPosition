@@ -1,5 +1,5 @@
-53e45426e76d9b4caf51ad4170035f4b *DESCRIPTION
-f35991a8f622053178e39e767dd5752a *NAMESPACE
+ba6cd30672a9b0032ec78071ebd47605 *DESCRIPTION
+beba089fbb69af060103f8de21569fb7 *NAMESPACE
 67a18ec98985782cce497843eb8d707e *R/boot.compute.fj.R
 57cb7b057fb3dad4cd2b87ad64496abe *R/boot.ratio.test.R
 700ec27937e19055a41d5f5780a5c898 *R/boot.samples.R
@@ -21,7 +21,7 @@ ef148b1c5b664d3220fdd171ac6c084c *R/print.epGPCA.inference.battery.R
 e67f3faf5c504857e95a788a589198be *R/print.inpoOmni.R
 686d31eb3b2cade7d85f1c3b4e97f1d9 *R/print.inpoOutput.R
 12195799779a4e83ca6035eb312d23c2 *R/rebuildMCAtable.R
-43abe8f859bdb2c8ae633ea59ce3f83c *inst/CITATION
+fc03e5263a05ea3dbc12c11363555c85 *inst/CITATION
 edde009cfd969a21543b223bad0b1583 *man/InPosition-package.Rd
 a319da140bfe70714decee9d67dd2e73 *man/boot.compute.fj.Rd
 37ede15368a595a127fc3777a88370f5 *man/boot.ratio.test.Rd
