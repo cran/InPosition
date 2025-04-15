@@ -1,3 +1,14 @@
+#' Print results from InPosition
+#' 
+#' Print results from the InPosition.
+#' 
+#' 
+#' @param x an list that contains items to make into the inpoOutput class.
+#' @param \dots inherited/passed arguments for S3 print method(s).
+#' @author Derek Beaton and Cherise Chin-Fatt
+#' @seealso \code{\link{epPCA.inference.battery}}, \code{\link{inGraphs}}
+#' @keywords print
+#' @export print.inpoOutput
 print.inpoOutput <-
 function (x,...) {
 

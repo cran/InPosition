@@ -1,3 +1,14 @@
+#' Print Multiple Correspondence Analysis (MCA) Inference results
+#' 
+#' Print Multiple Correspondence Analysis (MCA) Inference results.
+#' 
+#' 
+#' @param x an list that contains items to make into the
+#' epMCA.inference.battery class.
+#' @param \dots inherited/passed arguments for S3 print method(s).
+#' @author Derek Beaton and Cherise Chin-Fatt
+#' @keywords print
+#' @export print.epMCA.inference.battery
 print.epMCA.inference.battery <-
 function (x,...) {
 

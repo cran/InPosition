@@ -1,3 +1,14 @@
+#' Print Principal Components Analysis (PCA) Inference results
+#' 
+#' Print Principal Components Analysis (PCA) Inference results.
+#' 
+#' 
+#' @param x an list that contains items to make into the
+#' epPCA.inference.battery class.
+#' @param \dots inherited/passed arguments for S3 print method(s).
+#' @author Derek Beaton and Cherise Chin-Fatt
+#' @keywords print
+#' @export print.epPCA.inference.battery
 print.epPCA.inference.battery <-
 function (x,...) {
 	

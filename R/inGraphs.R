@@ -1,8 +1,65 @@
-inGraphs <- function(res,DESIGN=NULL,x_axis=NULL,y_axis=NULL,inference.info=NULL,color.by.boots=TRUE,boot.cols=c('plum4','darkseagreen','firebrick3'), fi.col=NULL,fi.pch=NULL,fj.col=NULL,fj.pch=NULL,col.offset=NULL,constraints=NULL,xlab=NULL,ylab=NULL,main=NULL,bootstrapBars=TRUE,correlationPlotter=TRUE,biplots=FALSE){
+### changed to have 1 and 2 as default axes
+
+
+#' inGraphs: InPosition plotting function
+#' 
+#' InPosition plotting function which is an interface to
+#' \code{\link[prettyGraphs]{prettyGraphs}}.
+#' 
+#' 
+#' @param res results from InPosition or ExPosition. If results are from
+#' ExPosition, \code{inference.info} must be included.
+#' @param DESIGN A design matrix to apply colors (by pallete selection) to row
+#' items
+#' @param x_axis which component should be on the x axis?
+#' @param y_axis which component should be on the y axis?
+#' @param inference.info Inference data as output by InPosition (of class
+#' inpoOutput).
+#' @param color.by.boots a boolean. If TRUE, items are colored by bootstrap
+#' ratio test. Items larger than \code{critical.value} are colored 'plum4' on
+#' the horizontal component, 'darkseagreen' on the vertical component, or
+#' 'firebrick3' if the item is significant on both components (to be
+#' visualized). If FALSE, the color of the items will be used.
+#' @param boot.cols vector of colors: \code{c(horizontal component color,
+#' vertical component color, color when item is significant on both)}.
+#' @param fi.col A matrix of colors for the row items. If NULL, colors will be
+#' selected.
+#' @param fi.pch A matrix of pch values for the row items. If NULL, pch values
+#' are all 21.
+#' @param fj.col A matrix of colors for the column items. If NULL, colors will
+#' be selected.
+#' @param fj.pch A matrix of pch values for the column items. If NULL, pch
+#' values are all 21.
+#' @param col.offset A numeric offset value. Is passed to
+#' \code{\link[prettyGraphs]{createColorVectorsByDesign}}.
+#' @param constraints Plot constraints as returned from
+#' \code{\link[prettyGraphs]{prettyPlot}}. If NULL, constraints are selected.
+#' @param xlab x axis label
+#' @param ylab y axis label
+#' @param main main label for the graph window
+#' @param bootstrapBars a boolean. If TRUE (default), bootstrap ratio bar plots
+#' will be created.
+#' @param correlationPlotter a boolean. If TRUE (default), a correlation circle
+#' plot will be created. Applies to PCA family of methods (CA is excluded for
+#' now).
+#' @return Currently, nothing is returned. This function, for now, works as a
+#' visualizer for inference tests. Colors and constraints come from the
+#' descriptive (fixed effects) analysis.
+#' @author Derek Beaton
+#' @seealso \code{\link[ExPosition]{epGraphs}}
+#' @keywords misc multivariate permutation bootstrap graphs
+#' @examples
+#' 	data(ep.iris)
+#' 	data<-ep.iris$data
+#' 	design<-ep.iris$design
+#' 	pca.iris.res <- epPCA.inference.battery(data,DESIGN=design,make_design_nominal=FALSE)
+#' 	inGraphs(pca.iris.res,y_axis=3)
+#' @export inGraphs
+inGraphs <- function(res,DESIGN=NULL,x_axis=1,y_axis=2,inference.info=NULL,color.by.boots=TRUE,boot.cols=c('plum4','darkseagreen','firebrick3'), fi.col=NULL,fi.pch=NULL,fj.col=NULL,fj.pch=NULL,col.offset=NULL,constraints=NULL,xlab=NULL,ylab=NULL,main=NULL,bootstrapBars=TRUE,correlationPlotter=TRUE){
 
 ##update this to get the pchs.
 
-	pca.types <- c('epPCA','epMDS','epGPCA')
+	pca.types <- c('epPCA','epMDS')
 	ca.types <- c('epCA','epMCA')
 
 	#A simple override/check. If someone puts in expoOutput class data, epGraphs will recognize it.
@@ -26,15 +83,17 @@ inGraphs <- function(res,DESIGN=NULL,x_axis=NULL,y_axis=NULL,inference.info=NULL
 		stop("inGraphs requires inference.info")
 	}##could use some more checks...	
 
-	component.p.order <- order(inference.info$components$p.vals)
-	which.axes <- sort(component.p.order[1:2])	
 	
-	if(is.null(x_axis)){
-		x_axis <- which.axes[1]
-	}
-	if(is.null(y_axis)){
-		y_axis <- which.axes[2]		
-	}
+	### REMOVED BECAUSE WTF WAS I THINKING 12 YEARS AGO?
+	# component.p.order <- order(inference.info$components$p.vals)
+	# which.axes <- sort(component.p.order[1:2])	
+	# 
+	# if(is.null(x_axis)){
+	# 	x_axis <- which.axes[1]
+	# }
+	# if(is.null(y_axis)){
+	# 	y_axis <- which.axes[2]		
+	# }
 		
 	#if the override/check fails, it skips to this. Which means it was internal to ep*()
 	if(!(class(res)[1] %in% c(pca.types,ca.types))){
@@ -166,11 +225,7 @@ inGraphs <- function(res,DESIGN=NULL,x_axis=NULL,y_axis=NULL,inference.info=NULL
 		fi.plot.info <- prettyPlot(res$fi,x_axis=x_axis,y_axis=y_axis,col=fi.col,axes=TRUE,xlab=xlab,ylab=ylab,main=main,constraints=constraints,pch=fi.pch,contributionCircles=TRUE,contributions=res$ci,dev.new=TRUE)
 		
 		if(!(class(res)[1]=='epMDS')){
-			if(biplots){
-				fj.plot.info <- prettyPlot(res$fj,x_axis=x_axis,y_axis=y_axis,col=fj.col,axes=FALSE,pch=fj.pch,contributionCircles=TRUE,contributions=abs(inference.info$fj.boots$tests$boot.ratios),dev.new=FALSE,new.plot=FALSE)
-			}else{
-				fj.plot.info <- prettyPlot(res$fj,x_axis=x_axis,y_axis=y_axis,col=fj.col,axes=TRUE,xlab=xlab,ylab=ylab,main=main,constraints=constraints,pch=fj.pch,contributionCircles=TRUE,contributions=abs(inference.info$fj.boots$tests$boot.ratios),dev.new=TRUE)		
-			}
+			fj.plot.info <- prettyPlot(res$fj,x_axis=x_axis,y_axis=y_axis,col=fj.col,axes=TRUE,xlab=xlab,ylab=ylab,main=main,constraints=constraints,pch=fj.pch,contributionCircles=TRUE,contributions=abs(inference.info$fj.boots$tests$boot.ratios),dev.new=TRUE)		
 		}
 		if(bootstrapBars){
 			if(!(class(res)[1]=='epMDS')){
